@@ -25,7 +25,7 @@ class ReceiptScreen extends StatelessWidget {
               final product = item['product'];
               final quantity = item['quantity'];
               return Text('${product.name} - $quantity x \$${product.price}');
-            }),
+            }).toList(),
             const SizedBox(height: 20),
             Text('Total Amount: \$${sale.totalAmount}', style: const TextStyle(fontSize: 20)),
             Text('Payment Method: ${sale.paymentMethod}', style: const TextStyle(fontSize: 18)),

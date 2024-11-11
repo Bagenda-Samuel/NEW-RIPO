@@ -1,84 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:electric/screens/product_list_screen.dart';
-import 'package:electric/screens/sales_screen.dart';
-import 'package:electric/screens/sales_report_screen.dart';
-import 'package:electric/screens/customer_list_screen.dart';
-import 'package:electric/screens/customer_form_screen.dart';
-import 'package:electric/screens/low_stock_screen.dart';
+import 'screens/customer_list_screen.dart';
+import 'screens/customer_form_screen.dart';
+import 'screens/inventory_report_screen.dart';
+import 'screens/low_stock_screen.dart';
+import 'screens/product_form_screen.dart';
+import 'screens/product_list_screen.dart';
+import 'screens/receipt_screen.dart';
+import 'screens/sales_report_screen.dart';
+import 'models/sale.dart';
 
 void main() {
-  runApp(const ElectricApp());
+  runApp(MyApp());
 }
 
-class ElectricApp extends StatelessWidget {
-  const ElectricApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Electric Store Management',
+      title: 'POS System',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
-      routes: {
-        '/product-list': (context) => const ProductListScreen(),
-        '/sales': (context) => const SalesScreen(),
-        '/sales-report': (context) => const SalesReportScreen(),
-        '/customer-list': (context) => const CustomerListScreen(),
-        '/customer-form': (context) => const CustomerFormScreen(),
-        '/low-stock': (context) => const LowStockScreen(),
+      initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/receipt') {
+          final Sale sale = settings.arguments as Sale;
+          return MaterialPageRoute(
+            builder: (context) {
+              return ReceiptScreen(sale: sale);
+            },
+          );
+        }
+        // Add other routes with specific arguments if needed
+        switch (settings.name) {
+          case '/':
+            return MaterialPageRoute(builder: (context) => CustomerListScreen());
+          case '/customerForm':
+            return MaterialPageRoute(builder: (context) => CustomerFormScreen());
+          case '/inventoryReport':
+            return MaterialPageRoute(builder: (context) => InventoryReportScreen());
+          case '/lowStock':
+            return MaterialPageRoute(builder: (context) => LowStockScreen());
+          case '/productForm':
+            return MaterialPageRoute(builder: (context) => ProductFormScreen());
+          case '/productList':
+            return MaterialPageRoute(builder: (context) => ProductListScreen());
+          case '/salesReport':
+            return MaterialPageRoute(builder: (context) => SalesReportScreen());
+          default:
+            return null;
+        }
       },
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Electric Store Management'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/product-list');
-              },
-              child: const Text('Manage Products'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/sales');
-              },
-              child: const Text('Sales'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/sales-report');
-              },
-              child: const Text('Sales Report'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/customer-list');
-              },
-              child: const Text('Customers'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/low-stock');
-              },
-              child: const Text('Low Stock Alert'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
